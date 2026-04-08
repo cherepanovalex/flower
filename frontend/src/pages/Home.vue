@@ -44,6 +44,24 @@
           </div>
         </div>
       </section>
+
+      <!-- Contacts -->
+      <section class="section contacts-section">
+        <h2 class="section-title">Наши контакты</h2>
+        <div class="contacts-grid">
+          <div class="contacts-info">
+            <p><strong>Адрес:</strong> г. Москва, Цветочный бульвар, 12</p>
+            <p><strong>Телефон:</strong> +7 (999) 123-45-67</p>
+            <div class="social-links">
+              <a href="#" class="social-link whatsapp">WhatsApp</a>
+              <a href="#" class="social-link telegram">Telegram</a>
+            </div>
+          </div>
+          <div class="map-container">
+            <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d2243.4697746535544!2d37.61868351582845!3d55.76775618055611!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x0%3A0x0!2zNTXCsDQ2JzA0LjAiTiAzN8KwMzcnMTUuMSJF!5e0!3m2!1sru!2sru!4v1611234567890!5m2!1sru!2sru" width="100%" height="300" style="border:0;" allowfullscreen="" loading="lazy"></iframe>
+          </div>
+        </div>
+      </section>
     </div>
   </div>
 </template>
@@ -178,4 +196,36 @@ const goToCategory = (id) => {
   padding: 30px;
   border-radius: 4px;
 }
+.contacts-grid {
+  display: flex;
+  grid-template-columns: 1fr 1fr;
+  flex-wrap: wrap;
+  gap: 40px;
+}
+.contacts-info {
+  flex: 1;
+  min-width: 300px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+.map-container {
+  flex: 1;
+  min-width: 300px;
+  border-radius: 8px;
+  overflow: hidden;
+}
+.social-links {
+  display: flex;
+  gap: 15px;
+  margin-top: 20px;
+}
+.social-link {
+  padding: 10px 20px;
+  border-radius: 30px;
+  color: white;
+  font-weight: 500;
+}
+.social-link.whatsapp { background: #25D366; }
+.social-link.telegram { background: #0088cc; }
 </style>

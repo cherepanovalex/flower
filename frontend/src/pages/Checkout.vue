@@ -4,11 +4,11 @@
     <form @submit.prevent="submitOrder" class="checkout-form">
       <div class="form-group">
         <label>Имя получателя</label>
-        <input type="text" v-model="form.recipientName" required placeholder="Мария" />
+        <input type="text" v-model="form.recipientName" @input="filterName" required placeholder="Мария" />
       </div>
       <div class="form-group">
         <label>Телефон получателя</label>
-        <input type="tel" v-model="form.recipientPhone" required placeholder="+7 999 000-00-00" />
+        <input type="tel" v-model="form.recipientPhone" @input="maskPhone" required placeholder="+7 (999) 000-00-00" maxlength="18" />
       </div>
       <div class="form-group">
         <label>Текст для записки</label>
@@ -53,6 +53,30 @@ const form = ref({
   deliveryTime: '10:00-12:00',
   anonymous: false
 })
+
+const filterName = (e) => {
+  form.value.recipientName = e.target.value.replace(/[^a-zA-Zа-яА-ЯёЁ\s]/g, '')
+}
+
+const maskPhone = (e) => {
+  let val = e.target.value.replace(/\D/g, '')
+  if (val.startsWith('7') || val.startsWith('8')) {
+    val = val.substring(1)
+  }
+  
+  if (val.length === 0) {
+    form.value.recipientPhone = ''
+    return
+  }
+
+  let formatted = '+7 '
+  if (val.length > 0) formatted += '(' + val.substring(0, 3)
+  if (val.length >= 4) formatted += ') ' + val.substring(3, 6)
+  if (val.length >= 7) formatted += '-' + val.substring(6, 8)
+  if (val.length >= 9) formatted += '-' + val.substring(8, 10)
+  
+  form.value.recipientPhone = formatted
+}
 
 const isSubmitting = ref(false)
 

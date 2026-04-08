@@ -25,6 +25,11 @@ body {
   -webkit-font-smoothing: antialiased;
 }
 
+/* Fix iOS Zooming Issue */
+input, select, textarea {
+  font-size: 16px !important;
+}
+
 h1,
 h2,
 h3,
