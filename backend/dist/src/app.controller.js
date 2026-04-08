@@ -54,6 +54,12 @@ let AppController = class AppController {
     constructor(appService) {
         this.appService = appService;
     }
+    getHello() {
+        return {
+            status: 'success',
+            message: 'Fleur Shop API is running successfully! 🌺'
+        };
+    }
     async requestOtp(body) {
         const code = Math.floor(100000 + Math.random() * 900000).toString();
         const transporter = nodemailer.createTransport({
@@ -111,6 +117,12 @@ let AppController = class AppController {
     }
 };
 exports.AppController = AppController;
+__decorate([
+    (0, common_1.Get)(),
+    __metadata("design:type", Function),
+    __metadata("design:paramtypes", []),
+    __metadata("design:returntype", void 0)
+], AppController.prototype, "getHello", null);
 __decorate([
     (0, common_1.Post)('auth/request-otp'),
     __param(0, (0, common_1.Body)()),

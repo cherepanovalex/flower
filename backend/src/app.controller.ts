@@ -6,6 +6,14 @@ import * as nodemailer from 'nodemailer';
 export class AppController {
   constructor(private readonly appService: AppService) {}
 
+  @Get()
+  getHello() {
+    return {
+      status: 'success',
+      message: 'Fleur Shop API is running successfully! 🌺'
+    };
+  }
+
   // ====================== AUTH ======================
   @Post('auth/request-otp')
   async requestOtp(@Body() body: { email: string }) {
