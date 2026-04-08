@@ -1,32 +1,39 @@
 import { defineStore } from 'pinia'
 
-const defaultProducts = [
-  { id: 1, name: 'Royalty', price: 281300, imageUrl: '/images/roses_bouquet_1775641316261.png', category: 'kustovye-rozy', type: 'Моно-букет', color: 'Алый', composition: ['Кустовая роза'] },
-  { id: 2, name: 'Sunset Reverie', price: 800000, imageUrl: '/images/peonies_bouquet_1775641302410.png', category: 'avtorskie', type: '', color: '', composition: [] },
-  { id: 3, name: 'Hydrangeas 7', price: 33000, imageUrl: '/images/hero_flowers_1775641286421.png', category: 'gollandskie', type: '', color: 'Сиреневый', composition: [] },
-  { id: 4, name: 'Julette 5.0', price: 71800, imageUrl: '/images/hatbox_flowers_1775641332248.png', category: 'kashpo', type: '', color: 'Алый', composition: ['Роза 40 см', 'Эвкалипт'] },
-  { id: 5, name: 'Zhanym', price: 68000, imageUrl: '/images/dried_flowers_1775641363329.png', category: 'mono', type: 'Моно-букет', color: 'Сиреневый', composition: ['Джульетта'] },
-]
+const API_URL = 'https://flower-rfww.onrender.com'
 
 export const useProductsStore = defineStore('products', {
   state: () => ({
-    products: JSON.parse(localStorage.getItem('products')) || defaultProducts
+    products: []
   }),
   actions: {
-    addProduct(product) {
-      this.products = [...this.products, { ...product, id: Date.now() }]
-      this.saveProducts()
+    async fetchProducts() {
+      try {
+        const res = await fetch(`${API_URL}/products`)
+        this.products = await res.json()
+      } catch (err) {
+        console.error("Failed to fetch products", err)
+      }
     },
-    updateProduct(updatedProduct) {
-      this.products = this.products.map(p => p.id === updatedProduct.id ? updatedProduct : p)
-      this.saveProducts()
+    async addProduct(product) {
+      await fetch(`${API_URL}/products`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(product)
+      })
+      await this.fetchProducts()
     },
-    deleteProduct(id) {
-      this.products = this.products.filter(p => p.id !== id)
-      this.saveProducts()
+    async updateProduct(updatedProduct) {
+      await fetch(`${API_URL}/products/${updatedProduct.id}`, {
+        method: 'PUT',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(updatedProduct)
+      })
+      await this.fetchProducts()
     },
-    saveProducts() {
-      localStorage.setItem('products', JSON.stringify(this.products))
+    async deleteProduct(id) {
+      await fetch(`${API_URL}/products/${id}`, { method: 'DELETE' })
+      await this.fetchProducts()
     }
   }
 })

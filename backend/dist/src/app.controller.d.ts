@@ -22,30 +22,23 @@ export declare class AppController {
             role: string;
         };
     }>;
-    getProducts(): Promise<{
+    private globalProducts;
+    private globalOrders;
+    getProducts(): {
         id: number;
         name: string;
         price: number;
-    }[]>;
-    getProduct(id: string): Promise<{
-        id: string;
-        name: string;
-        price: number;
-        description: string;
-    }>;
-    createOrder(orderData: any, req: any): Promise<{
-        message: string;
-        orderId: number;
-    }>;
-    getMyOrders(req: any): Promise<never[]>;
-    createProduct(productData: any): Promise<{
-        message: string;
-    }>;
-    updateProduct(id: string, productData: any): Promise<{
-        message: string;
-    }>;
-    deleteProduct(id: string): Promise<{
-        message: string;
-    }>;
-    getAllOrders(): Promise<never[]>;
+        imageUrl: string;
+        category: string;
+        type: string;
+        color: string;
+        composition: string[];
+    }[];
+    addProduct(product: any): any;
+    updateProduct(id: string, product: any): any;
+    deleteProduct(id: string): {
+        success: boolean;
+    };
+    getOrders(): never[];
+    addOrder(order: any): any;
 }

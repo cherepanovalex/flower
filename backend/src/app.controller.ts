@@ -38,7 +38,6 @@ export class AppController {
       console.log(`OTP (${code}) successfully sent via Email to: ${body.email}`);
     } catch (error) {
       console.error('Ошибка отправки Email. Убедитесь, что EMAIL_USER и EMAIL_PASS указаны в .env', error);
-      // В режиме разработки просто возвращаем код на клиент, если почта не настроена
       return { message: 'OTP sent in DEV mode', code: code }; 
     }
 
@@ -47,65 +46,54 @@ export class AppController {
 
   @Post('auth/verify-otp')
   async verifyOtp(@Body() body: { email: string; code: string }) {
-    // 1. Validate code in DB and check expiration
-    // 2. Find User by email or create new User
-    // 3. Generate JWT
     return { token: 'jwt-token-example', user: { email: body.email, role: 'USER' } };
   }
 
+  // --- MOCK IN-MEMORY DATABASES ---
+  private globalProducts = [
+    { id: 1, name: 'Royalty', price: 281300, imageUrl: '/images/roses_bouquet_1775641316261.png', category: 'kustovye-rozy', type: 'Моно-букет', color: 'Алый', composition: ['Кустовая роза'] },
+    { id: 2, name: 'Sunset Reverie', price: 800000, imageUrl: '/images/peonies_bouquet_1775641302410.png', category: 'avtorskie', type: '', color: '', composition: [] },
+    { id: 3, name: 'Hydrangeas 7', price: 33000, imageUrl: '/images/hero_flowers_1775641286421.png', category: 'gollandskie', type: '', color: 'Сиреневый', composition: [] },
+    { id: 4, name: 'Julette 5.0', price: 71800, imageUrl: '/images/hatbox_flowers_1775641332248.png', category: 'kashpo', type: '', color: 'Алый', composition: ['Роза 40 см', 'Эвкалипт'] },
+    { id: 5, name: 'Zhanym', price: 68000, imageUrl: '/images/dried_flowers_1775641363329.png', category: 'mono', type: 'Моно-букет', color: 'Сиреневый', composition: ['Джульетта'] },
+  ];
+  private globalOrders = [];
+
   // ====================== PRODUCTS ======================
   @Get('products')
-  async getProducts() {
-    // prisma.product.findMany()
-    return [
-      { id: 1, name: 'Нежный пион', price: 3500 },
-      { id: 2, name: 'Монобукет из роз', price: 4200 }
-    ];
+  getProducts() {
+    return this.globalProducts;
   }
 
-  @Get('products/:id')
-  async getProduct(@Param('id') id: string) {
-    // prisma.product.findUnique()
-    return { id, name: 'Нежный пион', price: 3500, description: '...' };
+  @Post('products')
+  addProduct(@Body() product: any) {
+    const newProduct = { ...product, id: Date.now() };
+    this.globalProducts.push(newProduct);
+    return newProduct;
+  }
+
+  @Put('products/:id')
+  updateProduct(@Param('id') id: string, @Body() product: any) {
+    this.globalProducts = this.globalProducts.map(p => p.id === Number(id) ? product : p);
+    return product;
+  }
+
+  @Delete('products/:id')
+  deleteProduct(@Param('id') id: string) {
+    this.globalProducts = this.globalProducts.filter(p => p.id !== Number(id));
+    return { success: true };
   }
 
   // ====================== ORDERS ======================
-  // Requires JwtAuthGuard in real implementation
+  @Get('orders')
+  getOrders() {
+    return this.globalOrders.sort((a,b) => b.id - a.id);
+  }
+
   @Post('orders')
-  async createOrder(@Body() orderData: any, @Request() req) {
-    // 1. Validate orderItems
-    // 2. Calculate totalPrice on server side using DB prices (security)
-    // 3. Save Order and OrderItems to DB (prisma.order.create)
-    return { message: 'Order created successfully', orderId: 1 };
-  }
-
-  @Get('orders/my')
-  async getMyOrders(@Request() req) {
-    // req.user has extracted payload from JWT
-    // fetch user orders: prisma.order.findMany({ where: { userId: req.user.id } })
-    return [];
-  }
-
-  // ====================== ADMIN ======================
-  // Requires JwtAuthGuard AND RolesGuard('ADMIN')
-  @Post('admin/product')
-  async createProduct(@Body() productData: any) {
-    return { message: 'Product created' };
-  }
-
-  @Put('admin/product/:id')
-  async updateProduct(@Param('id') id: string, @Body() productData: any) {
-    return { message: 'Product updated' };
-  }
-
-  @Delete('admin/product/:id')
-  async deleteProduct(@Param('id') id: string) {
-    return { message: 'Product deleted' };
-  }
-
-  @Get('admin/orders')
-  async getAllOrders() {
-    // return prisma.order.findMany({ include: { orderItems: true } })
-    return []; 
+  addOrder(@Body() order: any) {
+    const newOrder = { ...order, id: Math.floor(1000 + Math.random() * 9000), date: new Date().toLocaleDateString('ru-RU') };
+    this.globalOrders.unshift(newOrder); // Add to top
+    return newOrder;
   }
 }

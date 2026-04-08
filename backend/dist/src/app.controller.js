@@ -88,32 +88,37 @@ let AppController = class AppController {
     async verifyOtp(body) {
         return { token: 'jwt-token-example', user: { email: body.email, role: 'USER' } };
     }
-    async getProducts() {
-        return [
-            { id: 1, name: 'Нежный пион', price: 3500 },
-            { id: 2, name: 'Монобукет из роз', price: 4200 }
-        ];
+    globalProducts = [
+        { id: 1, name: 'Royalty', price: 281300, imageUrl: '/images/roses_bouquet_1775641316261.png', category: 'kustovye-rozy', type: 'Моно-букет', color: 'Алый', composition: ['Кустовая роза'] },
+        { id: 2, name: 'Sunset Reverie', price: 800000, imageUrl: '/images/peonies_bouquet_1775641302410.png', category: 'avtorskie', type: '', color: '', composition: [] },
+        { id: 3, name: 'Hydrangeas 7', price: 33000, imageUrl: '/images/hero_flowers_1775641286421.png', category: 'gollandskie', type: '', color: 'Сиреневый', composition: [] },
+        { id: 4, name: 'Julette 5.0', price: 71800, imageUrl: '/images/hatbox_flowers_1775641332248.png', category: 'kashpo', type: '', color: 'Алый', composition: ['Роза 40 см', 'Эвкалипт'] },
+        { id: 5, name: 'Zhanym', price: 68000, imageUrl: '/images/dried_flowers_1775641363329.png', category: 'mono', type: 'Моно-букет', color: 'Сиреневый', composition: ['Джульетта'] },
+    ];
+    globalOrders = [];
+    getProducts() {
+        return this.globalProducts;
     }
-    async getProduct(id) {
-        return { id, name: 'Нежный пион', price: 3500, description: '...' };
+    addProduct(product) {
+        const newProduct = { ...product, id: Date.now() };
+        this.globalProducts.push(newProduct);
+        return newProduct;
     }
-    async createOrder(orderData, req) {
-        return { message: 'Order created successfully', orderId: 1 };
+    updateProduct(id, product) {
+        this.globalProducts = this.globalProducts.map(p => p.id === Number(id) ? product : p);
+        return product;
     }
-    async getMyOrders(req) {
-        return [];
+    deleteProduct(id) {
+        this.globalProducts = this.globalProducts.filter(p => p.id !== Number(id));
+        return { success: true };
     }
-    async createProduct(productData) {
-        return { message: 'Product created' };
+    getOrders() {
+        return this.globalOrders.sort((a, b) => b.id - a.id);
     }
-    async updateProduct(id, productData) {
-        return { message: 'Product updated' };
-    }
-    async deleteProduct(id) {
-        return { message: 'Product deleted' };
-    }
-    async getAllOrders() {
-        return [];
+    addOrder(order) {
+        const newOrder = { ...order, id: Math.floor(1000 + Math.random() * 9000), date: new Date().toLocaleDateString('ru-RU') };
+        this.globalOrders.unshift(newOrder);
+        return newOrder;
     }
 };
 exports.AppController = AppController;
@@ -141,58 +146,43 @@ __decorate([
     (0, common_1.Get)('products'),
     __metadata("design:type", Function),
     __metadata("design:paramtypes", []),
-    __metadata("design:returntype", Promise)
+    __metadata("design:returntype", void 0)
 ], AppController.prototype, "getProducts", null);
 __decorate([
-    (0, common_1.Get)('products/:id'),
-    __param(0, (0, common_1.Param)('id')),
-    __metadata("design:type", Function),
-    __metadata("design:paramtypes", [String]),
-    __metadata("design:returntype", Promise)
-], AppController.prototype, "getProduct", null);
-__decorate([
-    (0, common_1.Post)('orders'),
-    __param(0, (0, common_1.Body)()),
-    __param(1, (0, common_1.Request)()),
-    __metadata("design:type", Function),
-    __metadata("design:paramtypes", [Object, Object]),
-    __metadata("design:returntype", Promise)
-], AppController.prototype, "createOrder", null);
-__decorate([
-    (0, common_1.Get)('orders/my'),
-    __param(0, (0, common_1.Request)()),
-    __metadata("design:type", Function),
-    __metadata("design:paramtypes", [Object]),
-    __metadata("design:returntype", Promise)
-], AppController.prototype, "getMyOrders", null);
-__decorate([
-    (0, common_1.Post)('admin/product'),
+    (0, common_1.Post)('products'),
     __param(0, (0, common_1.Body)()),
     __metadata("design:type", Function),
     __metadata("design:paramtypes", [Object]),
-    __metadata("design:returntype", Promise)
-], AppController.prototype, "createProduct", null);
+    __metadata("design:returntype", void 0)
+], AppController.prototype, "addProduct", null);
 __decorate([
-    (0, common_1.Put)('admin/product/:id'),
+    (0, common_1.Put)('products/:id'),
     __param(0, (0, common_1.Param)('id')),
     __param(1, (0, common_1.Body)()),
     __metadata("design:type", Function),
     __metadata("design:paramtypes", [String, Object]),
-    __metadata("design:returntype", Promise)
+    __metadata("design:returntype", void 0)
 ], AppController.prototype, "updateProduct", null);
 __decorate([
-    (0, common_1.Delete)('admin/product/:id'),
+    (0, common_1.Delete)('products/:id'),
     __param(0, (0, common_1.Param)('id')),
     __metadata("design:type", Function),
     __metadata("design:paramtypes", [String]),
-    __metadata("design:returntype", Promise)
+    __metadata("design:returntype", void 0)
 ], AppController.prototype, "deleteProduct", null);
 __decorate([
-    (0, common_1.Get)('admin/orders'),
+    (0, common_1.Get)('orders'),
     __metadata("design:type", Function),
     __metadata("design:paramtypes", []),
-    __metadata("design:returntype", Promise)
-], AppController.prototype, "getAllOrders", null);
+    __metadata("design:returntype", void 0)
+], AppController.prototype, "getOrders", null);
+__decorate([
+    (0, common_1.Post)('orders'),
+    __param(0, (0, common_1.Body)()),
+    __metadata("design:type", Function),
+    __metadata("design:paramtypes", [Object]),
+    __metadata("design:returntype", void 0)
+], AppController.prototype, "addOrder", null);
 exports.AppController = AppController = __decorate([
     (0, common_1.Controller)(),
     __metadata("design:paramtypes", [app_service_1.AppService])
