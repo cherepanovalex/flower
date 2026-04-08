@@ -1,0 +1,64 @@
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+model User {
+  id        Int      @id @default(autoincrement())
+  email     String   @unique
+  role      String   @default("USER") // USER, ADMIN
+  orders    Order[]
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+model OtpCode {
+  id        Int      @id @default(autoincrement())
+  email     String   @unique
+  code      String
+  expiresAt DateTime
+  createdAt DateTime @default(now())
+}
+
+model Product {
+  id           Int      @id @default(autoincrement())
+  name         String
+  description  String
+  price        Float
+  imageUrl     String?
+  category     String
+  format       String
+  isBestseller Boolean  @default(false)
+  createdAt    DateTime @default(now())
+  updatedAt    DateTime @updatedAt
+  orderItems   OrderItem[]
+}
+
+model Order {
+  id             Int         @id @default(autoincrement())
+  userId         Int?
+  user           User?       @relation(fields: [userId], references: [id])
+  recipientName  String
+  recipientPhone String
+  noteText       String?
+  deliveryTime   String?
+  anonymous      Boolean     @default(false)
+  status         String      @default("NEW") // NEW, PAID, SHIPPED, COMPLETED
+  totalPrice     Float
+  createdAt      DateTime    @default(now())
+  orderItems     OrderItem[]
+}
+
+model OrderItem {
+  id        Int     @id @default(autoincrement())
+  orderId   Int
+  order     Order   @relation(fields: [orderId], references: [id])
+  productId Int
+  product   Product @relation(fields: [productId], references: [id])
+  quantity  Int
+  price     Float
+}

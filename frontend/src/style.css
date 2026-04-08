@@ -1,0 +1,91 @@
+:root {
+  --primary-color: #333333;
+  --secondary-color: #f7f7f7;
+  --accent-color: #e5b3a6;
+  /* elegant blush pink */
+  --text-color: #333333;
+  --light-text: #777777;
+  --border-color: #eeeeee;
+
+  --font-heading: 'Playfair Display', serif;
+  --font-body: 'Montserrat', sans-serif;
+}
+
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  font-family: var(--font-body);
+  color: var(--text-color);
+  background-color: #ffffff;
+  line-height: 1.6;
+  -webkit-font-smoothing: antialiased;
+}
+
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+  font-family: var(--font-heading);
+  font-weight: 400;
+  margin-bottom: 1rem;
+}
+
+a {
+  text-decoration: none;
+  color: inherit;
+  transition: color 0.3s ease;
+}
+
+a:hover {
+  color: var(--accent-color);
+}
+
+button {
+  font-family: var(--font-body);
+  cursor: pointer;
+  border: none;
+  background: var(--primary-color);
+  color: #fff;
+  padding: 12px 24px;
+  font-size: 14px;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+  transition: background-color 0.3s ease;
+}
+
+button:hover {
+  background: var(--accent-color);
+}
+
+.container {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 0 20px;
+  width: 100%;
+}
+
+/* Header */
+.header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 20px 0;
+  border-bottom: 1px solid var(--border-color);
+}
+
+.header .logo {
+  font-family: var(--font-heading);
+  font-size: 24px;
+  font-weight: 600;
+}
+
+.header-nav {
+  display: flex;
+  gap: 20px;
+}
