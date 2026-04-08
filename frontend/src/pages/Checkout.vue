@@ -59,21 +59,38 @@ const filterName = (e) => {
 }
 
 const maskPhone = (e) => {
-  let val = e.target.value.replace(/\D/g, '')
-  if (val.startsWith('7') || val.startsWith('8')) {
-    val = val.substring(1)
-  }
+  let input = e.target.value
   
-  if (val.length === 0) {
+  if (!input) {
+    form.value.recipientPhone = ''
+    return
+  }
+
+  let coreRaw = input
+  if (coreRaw.startsWith('+7 ')) {
+    coreRaw = coreRaw.substring(3)
+  } else if (coreRaw.startsWith('+7')) {
+    coreRaw = coreRaw.substring(2)
+  } else if (coreRaw.startsWith('8')) {
+    coreRaw = coreRaw.substring(1)
+  } else if (coreRaw.startsWith('7')) {
+    if (coreRaw.replace(/\D/g, '').length === 11) {
+      coreRaw = coreRaw.substring(1) // they pasted 11 digits starting with 7
+    }
+  }
+
+  let core = coreRaw.replace(/\D/g, '')
+  
+  if (!core) {
     form.value.recipientPhone = ''
     return
   }
 
   let formatted = '+7 '
-  if (val.length > 0) formatted += '(' + val.substring(0, 3)
-  if (val.length >= 4) formatted += ') ' + val.substring(3, 6)
-  if (val.length >= 7) formatted += '-' + val.substring(6, 8)
-  if (val.length >= 9) formatted += '-' + val.substring(8, 10)
+  if (core.length > 0) formatted += '(' + core.substring(0, 3)
+  if (core.length >= 4) formatted += ') ' + core.substring(3, 6)
+  if (core.length >= 7) formatted += '-' + core.substring(6, 8)
+  if (core.length >= 9) formatted += '-' + core.substring(8, 10)
   
   form.value.recipientPhone = formatted
 }
