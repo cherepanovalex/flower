@@ -29,9 +29,18 @@ const router = useRouter()
 const userStore = useUserStore()
 
 const requestOtp = async () => {
-  // POST /auth/request-otp
-  console.log('Requesting OTP for', email.value)
-  otpSent.value = true
+  try {
+    const response = await fetch('http://localhost:3000/auth/request-otp', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ email: email.value })
+    })
+    const data = await response.json()
+    console.log('OTP request status:', data)
+    otpSent.value = true
+  } catch (err) {
+    alert('Ошибка соединения с сервером')
+  }
 }
 
 const verifyOtp = async () => {

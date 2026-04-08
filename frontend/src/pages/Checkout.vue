@@ -40,7 +40,10 @@ import { ref } from 'vue'
 import { useRouter } from 'vue-router'
 import { useCartStore } from '../store/cart'
 
+import { useUserStore } from '../store/user'
+
 const cartStore = useCartStore()
+const userStore = useUserStore()
 const router = useRouter()
 
 const form = ref({
@@ -56,18 +59,21 @@ const isSubmitting = ref(false)
 const submitOrder = async () => {
   isSubmitting.value = true
   const orderData = {
+    id: Math.floor(1000 + Math.random() * 9000), // Mock receipt ID
+    date: new Date().toLocaleDateString('ru-RU'),
     ...form.value,
-    items: cartStore.items.map(i => ({ productId: i.product.id, quantity: i.quantity })),
+    items: cartStore.items.map(i => ({ product: i.product, quantity: i.quantity })),
     totalPrice: cartStore.totalPrice
   }
   
-  // POST /orders
+  // Save locally to user profile
+  userStore.addOrder(orderData)
   console.log('Submitting order:', orderData)
   
   setTimeout(() => {
     alert('Заказ успешно оформлен!')
     cartStore.clear()
-    router.push('/')
+    router.push('/profile')
     isSubmitting.value = false
   }, 1000)
 }

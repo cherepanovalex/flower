@@ -3,7 +3,8 @@ import { defineStore } from 'pinia'
 export const useUserStore = defineStore('user', {
   state: () => ({
     token: localStorage.getItem('token') || null,
-    user: null, // can decode from JWT or fetch from full user profile API
+    user: null, 
+    orders: JSON.parse(localStorage.getItem('myOrders')) || []
   }),
   actions: {
     setToken(token) {
@@ -14,6 +15,10 @@ export const useUserStore = defineStore('user', {
       this.token = null
       this.user = null
       localStorage.removeItem('token')
+    },
+    addOrder(order) {
+      this.orders.unshift(order)
+      localStorage.setItem('myOrders', JSON.stringify(this.orders))
     }
   },
   getters: {

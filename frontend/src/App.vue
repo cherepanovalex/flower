@@ -7,7 +7,7 @@
       <nav class="header-nav">
         <router-link to="/catalog">Каталог</router-link>
         <router-link to="/cart">Корзина ({{ cartStore.totalItems }})</router-link>
-        <router-link to="/admin" v-if="userStore.isAuthenticated">Админ</router-link>
+        <router-link to="/profile" v-if="userStore.isAuthenticated">Профиль</router-link>
         <router-link to="/login" v-if="!userStore.isAuthenticated">Войти</router-link>
         <a href="#" @click.prevent="userStore.logout" v-else>Выйти</a>
       </nav>

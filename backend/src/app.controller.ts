@@ -1,5 +1,6 @@
 import { Controller, Get, Post, Put, Delete, Body, Param, Request } from '@nestjs/common';
 import { AppService } from './app.service';
+import * as nodemailer from 'nodemailer';
 
 @Controller()
 export class AppController {
@@ -8,10 +9,32 @@ export class AppController {
   // ====================== AUTH ======================
   @Post('auth/request-otp')
   async requestOtp(@Body() body: { email: string }) {
-    // 1. Generate 6 digit code (e.g., Math.random)
-    // 2. Save to OtpCode table with TTL (e.g. 10 mins)
-    // 3. Send email via NodeMailer/SendGrid
-    return { message: 'OTP sent to ' + body.email };
+    const code = Math.floor(100000 + Math.random() * 900000).toString();
+    
+    const transporter = nodemailer.createTransport({
+      service: 'gmail',
+      auth: {
+        user: process.env.EMAIL_USER,
+        pass: process.env.EMAIL_PASS,
+      },
+    });
+
+    try {
+      await transporter.sendMail({
+        from: '"Fleur Shop" <no-reply@fleur.com>',
+        to: body.email,
+        subject: 'Код авторизации на сайте Fleur Shop',
+        text: `Ваш код для входа: ${code}`,
+        html: `<p>Ваш код для входа:</p><h2>${code}</h2>`,
+      });
+      console.log(`OTP (${code}) successfully sent via Email to: ${body.email}`);
+    } catch (error) {
+      console.error('Ошибка отправки Email. Убедитесь, что EMAIL_USER и EMAIL_PASS указаны в .env', error);
+      // В режиме разработки просто возвращаем код на клиент, если почта не настроена
+      return { message: 'OTP sent in DEV mode', code: code }; 
+    }
+
+    return { message: 'OTP sent to ' + body.email, code: code };
   }
 
   @Post('auth/verify-otp')

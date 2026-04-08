@@ -6,6 +6,7 @@ export declare class AppController {
         email: string;
     }): Promise<{
         message: string;
+        code: string;
     }>;
     verifyOtp(body: {
         email: string;
