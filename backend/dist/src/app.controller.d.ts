@@ -24,21 +24,12 @@ export declare class AppController {
     }>;
     private globalProducts;
     private globalOrders;
-    getProducts(): {
-        id: number;
-        name: string;
-        price: number;
-        imageUrl: string;
-        category: string;
-        type: string;
-        color: string;
-        composition: string[];
-    }[];
+    getProducts(): any[];
     addProduct(product: any): any;
     updateProduct(id: string, product: any): any;
     deleteProduct(id: string): {
         success: boolean;
     };
-    getOrders(): never[];
+    getOrders(): any[];
     addOrder(order: any): any;
 }

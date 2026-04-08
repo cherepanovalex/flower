@@ -32,11 +32,19 @@
 </template>
 
 <script setup>
-import { useCartStore } from './store/cart'
+import { onMounted } from 'vue'
 import { useUserStore } from './store/user'
+import { useCartStore } from './store/cart'
+import { useProductsStore } from './store/products'
 
-const cartStore = useCartStore()
 const userStore = useUserStore()
+const cartStore = useCartStore()
+const productsStore = useProductsStore()
+
+onMounted(() => {
+  productsStore.fetchProducts()
+  userStore.fetchOrders() // For mock testing, fetch orders globally so Admin can see them
+})
 </script>
 
 <style scoped>
