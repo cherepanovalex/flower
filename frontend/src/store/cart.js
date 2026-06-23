@@ -5,12 +5,12 @@ export const useCartStore = defineStore('cart', {
     items: JSON.parse(localStorage.getItem('cart')) || []
   }),
   actions: {
-    add(product) {
+    add(product, quantity = 1) {
       const existingItem = this.items.find(item => item.product.id === product.id)
       if (existingItem) {
-        existingItem.quantity += 1
+        existingItem.quantity += quantity
       } else {
-        this.items.push({ product, quantity: 1 })
+        this.items.push({ product, quantity })
       }
       this.saveCart()
     },

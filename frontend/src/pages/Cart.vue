@@ -28,7 +28,7 @@ const cartStore = useCartStore()
 .cart-page { padding: 40px 20px; }
 .cart-content { display: flex; gap: 40px; margin-top: 20px; flex-wrap: wrap; }
 .cart-items { flex: 2; min-width: 300px; }
-.cart-summary { flex: 1; padding: 20px; background: var(--secondary-color); text-align: center; height: fit-content; min-width: 250px; }
+.cart-summary { flex: 1; padding: 20px; background: var(--secondary-color); border-radius: 8px; text-align: center; height: fit-content; min-width: 250px; font-variant-numeric: tabular-nums; }
 .checkout-btn { width: 100%; margin-top: 20px; }
 .empty-cart { text-align: center; margin-top: 40px; }
 </style>

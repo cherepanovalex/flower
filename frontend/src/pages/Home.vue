@@ -157,7 +157,7 @@ const goToCategory = (id) => {
   padding: 80px 20px;
   text-align: center;
   cursor: pointer;
-  border-radius: 4px;
+  border-radius: 8px;
   overflow: hidden;
   transition: transform 0.3s ease;
 }
@@ -170,6 +170,9 @@ const goToCategory = (id) => {
 }
 .category-card:hover {
   transform: scale(1.02);
+}
+.category-card:active {
+  transform: scale(0.97);
 }
 .category-card:hover::after {
   background: rgba(0,0,0,0.2);
@@ -194,11 +197,10 @@ const goToCategory = (id) => {
   min-width: 300px;
   background: var(--secondary-color);
   padding: 30px;
-  border-radius: 4px;
+  border-radius: 8px;
 }
 .contacts-grid {
   display: flex;
-  grid-template-columns: 1fr 1fr;
   flex-wrap: wrap;
   gap: 40px;
 }
@@ -225,6 +227,14 @@ const goToCategory = (id) => {
   border-radius: 30px;
   color: white;
   font-weight: 500;
+  transition: opacity 0.2s ease, transform 0.15s ease;
+}
+.social-link:hover {
+  opacity: 0.85;
+  color: white;
+}
+.social-link:active {
+  transform: scale(0.96);
 }
 .social-link.whatsapp { background: #25D366; }
 .social-link.telegram { background: #0088cc; }

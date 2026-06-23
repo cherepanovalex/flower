@@ -70,7 +70,7 @@ const userStore = useUserStore()
   gap: 20px;
 }
 .order-card {
-  border: 1px solid var(--border-color);
+  box-shadow: 0 0 0 1px rgba(0,0,0,0.07), 0 2px 8px rgba(0,0,0,0.04);
   border-radius: 8px;
   padding: 20px;
 }
@@ -104,7 +104,7 @@ const userStore = useUserStore()
   margin: 15px 0;
   padding: 15px;
   background: var(--secondary-color);
-  border-radius: 4px;
+  border-radius: 12px;
 }
 .order-items-grid {
   display: flex;
@@ -126,6 +126,7 @@ const userStore = useUserStore()
   height: 40px;
   object-fit: cover;
   border-radius: 4px;
+  box-shadow: inset 0 0 0 1px rgba(0, 0, 0, 0.08);
 }
 .order-item-chip span {
   font-size: 14px;
@@ -138,5 +139,6 @@ const userStore = useUserStore()
 .price-highlight {
   font-size: 20px;
   color: var(--primary-color);
+  font-variant-numeric: tabular-nums;
 }
 </style>

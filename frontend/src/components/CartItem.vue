@@ -55,6 +55,7 @@ const removeItem = () => {
   height: 80px;
   object-fit: cover;
   border-radius: 8px;
+  box-shadow: inset 0 0 0 1px rgba(0, 0, 0, 0.08);
 }
 .item-info h4 {
   margin: 0 0 5px 0;
@@ -63,6 +64,7 @@ const removeItem = () => {
 .item-info .price {
   margin: 0;
   color: var(--light-text);
+  font-variant-numeric: tabular-nums;
 }
 .item-actions {
   display: flex;
@@ -70,7 +72,9 @@ const removeItem = () => {
   gap: 10px;
 }
 .item-actions button {
-  padding: 5px 10px;
+  min-width: 40px;
+  min-height: 40px;
+  padding: 8px 10px;
   background: var(--secondary-color);
   color: var(--text-color);
   border: none;
@@ -82,10 +86,11 @@ const removeItem = () => {
 }
 .item-actions button.remove {
   background: transparent;
-  color: #ff4d4f;
+  color: var(--light-text);
+  transition: color 0.2s ease, transform 0.15s ease;
 }
 .item-actions button.remove:hover {
-  text-decoration: underline;
+  color: #ff4d4f;
   background: transparent;
 }
 </style>
